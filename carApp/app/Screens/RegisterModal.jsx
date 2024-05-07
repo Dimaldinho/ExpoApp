@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Modal, StyleSheet } from 'react-native';
+import registerNewUser from '../../api/registerNewUser.js';
 
 const RegisterModal = ({ visible, onClose }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [new_userLogin, setEmail] = useState('');
+  const [new_userPassword, setPassword] = useState('');
+  const [new_userPassword_Check, setPassword2] = useState('');
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     // Handle registration logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Password:', password2);
-    // Close the modal after registration
+    console.log('Login:', new_userLogin);
+    console.log('Password:', new_userPassword);
+    console.log('Password2:', new_userPassword_Check);
+    
+    if(new_userPassword == new_userPassword_Check){
+      try {
+        const userData = await registerNewUser(new_userLogin, new_userPassword);
+        console.log('User registered:', userData);
+        // Handle success
+      } catch (error) {
+        // Handle error
+        console.error('Error registering user:', error);
+      }
+    }
+
     onClose();
   };
 
@@ -20,22 +32,22 @@ const RegisterModal = ({ visible, onClose }) => {
       <View style={styles.container}>
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="Login"
           onChangeText={setEmail}
-          value={email}
+          value={new_userLogin}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           onChangeText={setPassword}
-          value={password}
+          value={new_userPassword}
           secureTextEntry
         />
         <TextInput
           style={styles.input}
           placeholder="Password2"
           onChangeText={setPassword2}
-          value={password2}
+          value={new_userPassword_Check}
           secureTextEntry
         />
         <Button title="Register" onPress={handleRegister} />
