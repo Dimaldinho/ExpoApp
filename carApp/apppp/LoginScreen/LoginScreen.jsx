@@ -1,21 +1,31 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 import RegisterModal from './RegisterModal';
+import checkLogin_Password from '../../api/loginCheck';
 
-const LoginScreen = ({ /*navigation*/ }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
+const LoginScreen = ({ navigation }) => {
+  const [userLogin, setEmail] = useState('');
+  const [userPassword, setPassword] = useState('');
   const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
+  
   /*const handleRegister = () => {
     navigation.navigate('Register');
   };*/
+  
   const toggleRegisterModal = () => {
     setIsRegisterModalVisible(!isRegisterModalVisible);
   };
-  const handleLogin = () => {
+  const handleLogin = async () => {
    
-    console.log('Email:', email);
-    console.log('Password:', password);
+    console.log('Login:', userLogin);
+    console.log('Password:', userPassword);
+
+    if(await checkLogin_Password(userLogin,userPassword)){
+      console.log("Success")
+      navigation.navigate('Main');
+    }
+  
   };
 
 
@@ -24,15 +34,15 @@ const LoginScreen = ({ /*navigation*/ }) => {
         
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Login"
         onChangeText={setEmail}
-        value={email}
+        value={userLogin}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
         onChangeText={setPassword}
-        value={password}
+        value={userPassword}
         secureTextEntry
       />
       
