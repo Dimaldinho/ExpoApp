@@ -5,13 +5,11 @@ import axios from 'axios';
 
 const checkLogin_Password= async (userLogin, userPassword) => {
   try {
-    const response = await axios.get(`https://stiff-blondell-dimaldinho-a2062e7b.koyeb.app/getUserByLogin?userLogin=${userLogin}`);
-    console.log(response.data[0]['user_login']);
-    if(response.data[0]['user_login'] == userLogin){
-      //console.log("Login correct")
-      if(response.data[0]['user_password'] == userPassword){
+    const response = await axios.get(`http://127.0.0.1:8000/verifyUser?userInput_Login=${userLogin}&userInput_Password=${userPassword}`);
+                                     
+   
+    if(response.data == true){
         return true
-      }
     }
     //console.log("Error")
     return false
